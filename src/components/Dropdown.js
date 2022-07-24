@@ -1,30 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-const Dropdown = ({
-  options,
-  label,
-  selected,
-  onSelectedChange,
-  textInput,
-}) => {
+const Dropdown = ({ label, options, selected, onSelectedChange }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef();
-
-  const renderedOptions = options.map(option => {
-    if (option.value === selected.value) {
-      return null;
-    }
-
-    return (
-      <div
-        key={option.value}
-        className='item'
-        onClick={() => onSelectedChange(option)}
-      >
-        {option.label}
-      </div>
-    );
-  });
 
   useEffect(() => {
     const onBodyClick = event => {
@@ -42,12 +20,26 @@ const Dropdown = ({
     };
   }, []);
 
+  const renderedOptions = options.map(option => {
+    if (option.value === selected.value) {
+      return null;
+    }
+
+    return (
+      <div
+        key={option.value}
+        className='item'
+        onClick={() => onSelectedChange(option)}
+      >
+        {option.label}
+      </div>
+    );
+  });
+
   return (
-    <div className='ui form' ref={ref}>
+    <div ref={ref} className='ui form'>
       <div className='field'>
-        <label htmlFor='' className='label'>
-          {label}
-        </label>
+        <label className='label'>{label}</label>
         <div
           onClick={() => setOpen(!open)}
           className={`ui selection dropdown ${open ? 'visible active' : ''}`}
@@ -59,7 +51,6 @@ const Dropdown = ({
           </div>
         </div>
       </div>
-      {textInput && <input style={{ color: `${selected.value}` }} />}
     </div>
   );
 };
